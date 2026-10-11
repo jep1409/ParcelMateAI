@@ -1,0 +1,40 @@
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+import fs from "fs";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+import { createApiRouter } from "./src/server/router.js";
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(express.json());
+
+// API routes
+app.use("/api", createApiRouter());
+
+// Serve static files - check dist/ (local) then public/ (deployed)
+const distPath = path.join(__dirname, "dist");
+const publicPath = path.join(__dirname, "public");
+const staticPath = fs.existsSync(distPath) ? distPath : (fs.existsSync(publicPath) ? publicPath : null);
+
+if (staticPath) {
+  app.use(express.static(staticPath));
+  app.get("*", (_req, res) => {
+    res.sendFile(path.join(staticPath, "index.html"));
+  });
+} else {
+  // Dev mode - Vite dev server handles frontend
+  app.get("/", (_req, res) => {
+    res.send(
+      '<html><body style="font-family:sans-serif;padding:2rem;"><h1>ParcelMate API Server</h1><p>API is running. Run <code>npx vite</code> in another terminal for the frontend dev server.</p></body></html>'
+    );
+  });
+}
+
+app.listen(Number(PORT), "0.0.0.0", () => {
+  console.log(`ParcelMate AI server running on http://localhost:${PORT}`);
+});

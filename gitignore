@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+
+# Build output (local only — public/ ships the built frontend)
+dist/
+build/
+.next/
+out/
+
+# Shipped frontend for deployment (do NOT ignore)
+!public/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Environment / Secrets
+.env
+.env.local
+.env.*.local
+
+# TypeScript
+*.tsbuildinfo
+
+# Runtime data (auto-seeds on first run via src/lib/db.ts)
+data/db.json
+
+# WorkBuddy / IDE workspace
+.workbuddy-ai/
+
+# Slidep / temp artifacts
+pitch/.slidep/
+__tmp_slide_*.pdf
+pitch/generate-pdf.mjs
